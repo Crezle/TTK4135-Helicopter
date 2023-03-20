@@ -1,0 +1,5 @@
+**/helicopter_quarc_win64/**
+**/slprj/**
+**/*.slxc
+**/*.rt-win64
+**/*.asv
