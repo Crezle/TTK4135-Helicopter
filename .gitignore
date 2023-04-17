@@ -3,3 +3,4 @@
 **/*.slxc
 **/*.rt-win64
 **/*.asv
+subprojects/**

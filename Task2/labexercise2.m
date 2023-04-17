@@ -129,8 +129,8 @@ p_c = timeseries(u,t);
 
 %% Extraction of timeseries
 
-run1 = load('open_loop_run1.mat').u_lambda_r_p_pdot;
-run2 = load('open_loop_run2.mat').u_lambda_r_p_pdot;
+run1 = load('Plots/open_loop_run1.mat').u_lambda_r_p_pdot;
+run2 = load('Plots/open_loop_run2.mat').u_lambda_r_p_pdot;
 
 run1_time = run1(1,:);
 run1_input = run1(2,:);
