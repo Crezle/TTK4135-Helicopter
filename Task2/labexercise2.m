@@ -43,8 +43,8 @@ uu 	    = p_constr;                             % Upper bound on control
 
 xl          = -Inf*ones(nx,1);                  % Lower bound on states (no bound)
 xu          = Inf*ones(nx,1);                   % Upper bound on states (no bound)
-xl(3)       = -p_constr;                        % Lower bound on state x3
-xu(3)       = p_constr;                         % Upper bound on state x3
+%xl(3)       = -p_constr;                        % Lower bound on state x3
+%xu(3)       = p_constr;                         % Upper bound on state x3
 
 % Generate constraints on measurements and inputs
 [vlb,vub]       = gen_constraints(N,M,xl,xu,ul,uu);
@@ -136,7 +136,7 @@ sgtitle("State and Input constrained, $q$ = " + q + ",\quad $\phi$ = " + phi,"in
 
 %% Extraction of timeseries and plot of helicopter runs
 
-runX = load('Data\open_loop_run1.mat').u_lambda_r_p_pdot; % Specify file to load
+runX = load('Data/open_loop_run1_stateandinputconstrained.mat').u_lambda_r_p_pdot; % Specify file to load
 
 runX_time = runX(1,:);
 runX_input = runX(2,:);
@@ -172,4 +172,4 @@ grid on; grid minor;
 xlabel('time ($s$)',"interpreter","latex")
 ylabel('$\dot{p}$',"interpreter","latex");
 
-sgtitle("Helicoper run, $q$ = " + q,"interpreter","latex");
+sgtitle("Helicoper run, State and Input constrained","interpreter","latex");
