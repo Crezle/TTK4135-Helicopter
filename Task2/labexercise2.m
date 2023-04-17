@@ -42,8 +42,8 @@ uu 	    = pi/6;                         % Upper bound on control
 
 xl          = -Inf*ones(mx,1);          % Lower bound on states (no bound)
 xu          = Inf*ones(mx,1);           % Upper bound on states (no bound)
-xl(3)       = ul;                      % Lower bound on state x3
-xu(3)       = uu;                      % Upper bound on state x3
+%xl(3)       = ul;                      % Lower bound on state x3
+%xu(3)       = uu;                      % Upper bound on state x3
 
 % Generate constraints on measurements and inputs
 [vlb,vub]       = gen_constraints(N,M,xl,xu,ul,uu); % hint: gen_constraints

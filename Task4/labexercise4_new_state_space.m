@@ -14,19 +14,21 @@ alpha = 0.5;
 beta = 20;
 
 
-Ac = [0 1 0 0 0 0;
-    0 0 -K_2 0 0 0;
-    0 0 0 1 0 0;
-    0 0 -K_1*K_pp -K_1*K_pd 0 0;
-    0 0 0 0 0 1;
-    0 0 0 0 -K_3*K_ep -K_3*K_ed];
+% Ac = [0 1 0 0 0 0;
+%     0 0 -K_2 0 0 0;
+%     0 0 0 1 0 0;
+%     0 0 -K_1*K_pp -K_1*K_pd 0 0;
+%     0 0 0 0 0 1;
+%     0 0 0 0 -K_3*K_ep -K_3*K_ed];
+% 
+% Bc = [0 0;
+%     0 0;
+%     0 0;
+%     K_1*K_pp 0;
+%     0 0;
+%     0 K_3*K_ep];
 
-Bc = [0 0;
-    0 0;
-    0 0;
-    K_1*K_pp 0;
-    0 0;
-    0 K_3*K_ep];
+
 
 mx = size(Ac,2); % Number of states (number of columns in A)
 mu = size(Bc,2); % Number of inputs(number of columns in B)
@@ -236,3 +238,21 @@ function [c,ceq] = nonlcon(x,params)
     ceq = [];
     
 end
+
+% function x_dot = f(x,u) % x_k+1 = x_k + h*f(x,u)
+%     lambda = x(1);
+%     r = x(2);
+%     p = x(3);
+%     p_dot = x(4);
+%     e = x(5);
+%     e_dot = x(6);
+%     pc = u(1);
+%     ec = u(2);
+%     
+%     lambda_dot = r;
+%     r_dot = -K_2*p;
+%     p_dot;
+%     p_ddot = K_1*K_pp*p - K_1*K_pd*K_pp*p_dot;
+%     e_dot;
+%     e_ddot = C_p*V_s*cos(p) + C_e*cos(e);
+% end
