@@ -4,7 +4,7 @@ init07;
 
 % Discrete time system model. x = [lambda r p p_dot]'
 h	= 0.25;                             % sampling time
-q = 0.12;                               %{0.12, 1.2, 12}
+q = 1.2;                               %{0.12, 1.2, 12}
 
 % Continuous state space matrices
 A_c = [0 1 0 0
@@ -36,10 +36,10 @@ z0 = z;                                         % Initial value for optimization
 
 % Bounds
 p_constr = pi/6;
-%ul 	    = -p_constr;                        % Lower bound on control
-%uu 	    = p_constr;                         % Upper bound on control
-ul          = -inf;                             % Lower bound on control (no bound)
-uu          = inf;                              % Upper bound on control (no bound)
+ul 	    = -p_constr;                        % Lower bound on control
+uu 	    = p_constr;                         % Upper bound on control
+%ul          = -inf;                             % Lower bound on control (no bound)
+%uu          = inf;                              % Upper bound on control (no bound)
 
 xl          = -Inf*ones(nx,1);                  % Lower bound on states (no bound)
 xu          = Inf*ones(nx,1);                   % Upper bound on states (no bound)
@@ -106,27 +106,32 @@ p_c = timeseries(u,t);
 
 figure(1)
 subplot(511);
-stairs(t,u)%,grid;
+stairs(t,u);
+grid on; grid minor;
 ylabel('$u$',"interpreter","latex");
 
 subplot(512);
-plot(t,x1,'m',t,x1,'mo')%,grid;
+plot(t,x1,'m',t,x1,'mo');
+grid on; grid minor;
 ylabel('$\lambda$',"interpreter","latex");
 
 subplot(513);
-plot(t,x2,'m',t,x2','mo')%,grid;
+plot(t,x2,'m',t,x2','mo');
+grid on; grid minor;
 ylabel('$r$',"interpreter","latex");
 
 subplot(514);
-plot(t,x3,'m',t,x3,'mo')%,grid;
+plot(t,x3,'m',t,x3,'mo');
+grid on; grid minor;
 ylabel('$p$',"interpreter","latex");
 
 subplot(515);
-plot(t,x4,'m',t,x4','mo')%,grid;
+plot(t,x4,'m',t,x4','mo');
+grid on; grid minor;
 xlabel('time ($s$)',"interpreter","latex")
 ylabel('$\dot{p}$',"interpreter","latex");
 
-sgtitle("State constrained, $q$ = "+q,"interpreter","latex");
+sgtitle("State and Input constrained, $q$ = "+q,"interpreter","latex");
 
 
 %% Extraction of timeseries
@@ -150,23 +155,28 @@ run2_pitchdt = run2(6,:);
 
 figure(2)
 subplot(511);
-stairs(run1_time,run1_input)%,grid;
+stairs(run1_time,run1_input);
+grid on; grid minor;
 ylabel('$u$',"interpreter","latex");
 
 subplot(512);
-plot(run1_time,run1_travel,'m',run1_time,run1_travel)%,grid;
+plot(run1_time,run1_travel,'m',run1_time,run1_travel);
+grid on; grid minor;
 ylabel('$\lambda$',"interpreter","latex");
 
 subplot(513);
-plot(run1_time,run1_traveldt,'m',run1_time,run1_traveldt')%,grid;
+plot(run1_time,run1_traveldt,'m',run1_time,run1_traveldt');
+grid on; grid minor;
 ylabel('$r$',"interpreter","latex");
 
 subplot(514);
-plot(run1_time,run1_pitch,'m',run1_time,run1_pitch)%,grid;
+plot(run1_time,run1_pitch,'m',run1_time,run1_pitch);
+grid on; grid minor;
 ylabel('$p$',"interpreter","latex");
 
 subplot(515);
-plot(run1_time,run1_pitchdt,'m',run1_time,run1_pitchdt')%,grid;
+plot(run1_time,run1_pitchdt,'m',run1_time,run1_pitchdt');
+grid on; grid minor;
 xlabel('time ($s$)',"interpreter","latex")
 ylabel('$\dot{p}$',"interpreter","latex");
 
@@ -175,19 +185,24 @@ sgtitle("Run 1, $q=1$","interpreter","latex");
 
 figure(3)
 subplot(511);
-stairs(run2_time,run2_input)%,grid;
+stairs(run2_time,run2_input);
+grid on; grid minor;
 ylabel('$u$',"interpreter","latex");
 subplot(512);
-plot(run2_time,run2_travel,'m',run2_time,run2_travel)%,grid;
+plot(run2_time,run2_travel,'m',run2_time,run2_travel);
+grid on; grid minor;
 ylabel('$\lambda$',"interpreter","latex");
 subplot(513);
-plot(run2_time,run2_traveldt,'m',run2_time,run2_traveldt')%,grid;
+plot(run2_time,run2_traveldt,'m',run2_time,run2_traveldt');
+grid on; grid minor;
 ylabel('$r$',"interpreter","latex");
 subplot(514);
-plot(run2_time,run2_pitch,'m',run2_time,run2_pitch)%,grid;
+plot(run2_time,run2_pitch,'m',run2_time,run2_pitch);
+grid on; grid minor;
 ylabel('$p$',"interpreter","latex");
 subplot(515);
-plot(run2_time,run2_pitchdt,'m',run2_time,run2_pitchdt')%,grid;
+plot(run2_time,run2_pitchdt,'m',run2_time,run2_pitchdt');
+grid on; grid minor;
 xlabel('time ($s$)',"interpreter","latex")
 ylabel('$\dot{p}$',"interpreter","latex");
 
