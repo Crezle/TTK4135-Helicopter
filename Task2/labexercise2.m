@@ -4,7 +4,7 @@ init07;
 
 % Discrete time system model. x = [lambda r p p_dot]'
 h	= 0.25;                             % sampling time
-q = 1.2;                               %{0.12, 1.2, 12}
+q = 0.12;                               %{0.12, 1.2, 12}
 
 % Continuous state space matrices
 A_c = [0 1 0 0
@@ -51,32 +51,32 @@ xu(3)       = p_constr;                         % Upper bound on state x3
 vlb(N*nx+M*nu)  = 0;                            % We want the last input to be zero
 vub(N*nx+M*nu)  = 0;                            % We want the last input to be zero
 
-% Generate the matrix Q and the vector c (objecitve function weights in the QP problem) 
-Q1 = zeros(nx,nx);
-Q1(1,1) = 2;                            % Weight on state x1
-Q1(2,2) = 0;                            % Weight on state x2
-Q1(3,3) = 0;                            % Weight on state x3
-Q1(4,4) = 0;                            % Weight on state x4
+% Generate the matrix G and the vector c (objecitve function weights in the QP problem) 
+Q = zeros(nx,nx);
+Q(1,1) = 2;                                 % Weight on state x1
+Q(2,2) = 0;                                 % Weight on state x2
+Q(3,3) = 0;                                 % Weight on state x3
+Q(4,4) = 0;                                 % Weight on state x4
 %Isn't it supposed to be 2q??
-P1 = 2*q;                               % Weight on input
-Q = gen_q(Q1, P1, N, N);                % Generate Q, hint: gen_q
-c = zeros(5*N,1);                       % Generate c, this is the linear constant term in the QP
+R = 2*q;                                    % Weight on input
+G = gen_q(Q, R, N, N);                      % Generate G, hint: gen_q
+c = zeros(5*N,1);                           % Generate c, this is the linear constant term in the QP
 
 %% Generate system matrixes for linear model
-Aeq = gen_aeq(A_d, b_d, N, nx, nu);       % Generate A, hint: gen_aeq
-beq = [A_d*x0; zeros((4*N)-4,1)];        % Generate b
+Aeq = gen_aeq(A_d, b_d, N, nx, nu);         % Generate A
+beq = [A_d*x0; zeros((4*N)-4,1)];           % Generate b
 
 %% Solve QP problem with linear model
 tic
-[z,lambda] = quadprog(Q,[],[],[],Aeq,beq,vlb,vub); % hint: quadprog. Type 'doc quadprog' for more info 
+[z,lambda] = quadprog(G,[],[],[],Aeq,beq,vlb,vub);
 t1=toc;
 
 % Calculate objective value
-phi1 = 0.0;
+phi = 0.0;
 PhiOut = zeros(N*nx+M*nu,1);
 for i=1:N*nx+M*nu
-  phi1=phi1+Q(i,i)*z(i)*z(i);
-  PhiOut(i) = phi1;
+  phi=phi+G(i,i)*z(i)*z(i);
+  PhiOut(i) = phi;
 end
 
 %% Extract control inputs and states
@@ -131,10 +131,10 @@ grid on; grid minor;
 xlabel('time ($s$)',"interpreter","latex")
 ylabel('$\dot{p}$',"interpreter","latex");
 
-sgtitle("State and Input constrained, $q$ = "+q,"interpreter","latex");
+sgtitle("State and Input constrained, $q$ = " + q + ",\quad $\phi$ = " + phi,"interpreter","latex");
 
 
-%% Extraction of timeseries
+%% Extraction of timeseries and plot of helicopter runs
 
 run1 = load('Data/open_loop_run1.mat').u_lambda_r_p_pdot;
 run2 = load('Data/open_loop_run2.mat').u_lambda_r_p_pdot;
