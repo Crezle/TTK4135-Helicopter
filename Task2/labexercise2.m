@@ -43,8 +43,8 @@ uu 	    = p_constr;                             % Upper bound on control
 
 xl          = -Inf*ones(nx,1);                  % Lower bound on states (no bound)
 xu          = Inf*ones(nx,1);                   % Upper bound on states (no bound)
-%xl(3)       = -p_constr;                        % Lower bound on state x3
-%xu(3)       = p_constr;                         % Upper bound on state x3
+xl(3)       = -p_constr;                        % Add Lower bound on state x3
+xu(3)       = p_constr;                         % Add Upper bound on state x3
 
 % Generate constraints on measurements and inputs
 [vlb,vub]       = gen_constraints(N,M,xl,xu,ul,uu);
