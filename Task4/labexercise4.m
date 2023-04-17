@@ -10,7 +10,7 @@ q2 = 1;
 lambda_0 = 0;
 lambda_f = pi;
 lambda_t = 2*pi/3;
-alpha = 0.5;
+alpha = 0.2;
 beta = 20;
 
 
@@ -143,14 +143,14 @@ R = diag(ones(1,mu));
 % Experiment 2: Task4_2.mat
 % Hypothesis: We want to avoid avoid obstracle, in theory we would want to
 % weight the elevation to avoid obstracle, but we don't take into account
-% the relation between pitch and elevation. ALPHA = 1, we noticed that the
-% constraint was neglected due to it being too small around ~1 degree.
+% the relation between pitch and elevation. 
+% Observation: We noticed that the constraint was neglected due to 
+% it being too small around ~11.46 degrees or ~0.2 radians
 
 % Observation: The helicopter followed the trajectory in terms of
 % elevation, but it still does not reach the optimal trajectory.
 Q = diag([1 1 1 1 20 1]);
 R = diag([1 1]);
-
 
 % Experiment 3: Task4_3.mat
 % Hypothesis: 
@@ -180,30 +180,38 @@ opt_input = timeseries(uopt,t);
 % 
 figure(2)
 subplot(421);
-stairs(t,u1),grid;
+stairs(t,u1);
+grid on; grid minor;
 ylabel('pc');
 subplot(422);
-stairs(t,u2),grid;
+stairs(t,u2);
+grid on; grid minor;
 ylabel('ec');
 subplot(423);
-plot(t,x1,'m',t,x1,'mo')%,grid;
+plot(t,x1,'m',t,x1,'mo');
+grid on; grid minor;
 ylabel('lambda');
 subplot(424);
-plot(t,x2,'m',t,x2','mo')%,grid;
+plot(t,x2,'m',t,x2','mo');
+grid on; grid minor;
 ylabel('r');
 subplot(425);
-plot(t,x3,'m',t,x3,'mo')%,grid;
+plot(t,x3,'m',t,x3,'mo');
+grid on; grid minor;
 ylabel('p');
 subplot(426);
-plot(t,x4,'m',t,x4,'mo')%,grid;
+plot(t,x4,'m',t,x4,'mo');
+grid on; grid minor;
 xlabel('tid (s)')
 ylabel('pdot');
 subplot(427);
 plot(t,x5,'m',t,x5,'mo')
+grid on; grid minor;
 xlabel('tid (s)')
 ylabel('e');
 subplot(428);
 plot(t,x6,'m',t,x6,'mo')
+grid on; grid minor;
 xlabel('tid (s)')
 ylabel('edot');
 sgtitle("$\alpha$ = " + alpha + "$\quad \beta$ = " + beta, 'interpreter', 'latex');
