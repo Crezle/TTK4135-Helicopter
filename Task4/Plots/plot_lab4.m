@@ -63,37 +63,3 @@ for i=1:num_of_runs
     sgtitle("Run " + i);
 
 end
-
-% figure(10);
-% tiled = tiledlayout(2,2);
-% tiled.TileSpacing = 'compact';
-% tiled.Padding = 'compact';
-% 
-% ax1 = nexttile;
-% plot(t(1:10:end),rad2deg(lambda(1:10:end))),grid;
-% 
-% xlabel('time [s]');
-% ylabel("\lambda [deg]");
-% %ylim([-35 35]);
-% hd = legend("Travel");
-% set(hd, 'Interpreter','latex')
-% title("Closed Loop");
-% 
-% ax2 = nexttile;
-% plot(t(1:10:end),rad2deg(e(1:10:end))),grid;
-% 
-% ax3 = nexttile;
-% plot(lambda(1:10:end),e(1:10:end));
-% hold on;
-% constrain_x = 0:pi/100:pi;
-% plot(constrain_x,0.2*exp(-20*(constrain_x - 2*pi/3).^2));
-% 
-% ax4 = nexttile;
-% constrain_x = -3:pi/100:pi*2;
-% plot(constrain_x,0.2*exp(-20*(constrain_x - 2*pi/3).^2));
-% 
-% xlabel('time [s]');
-% ylabel("e [deg]");
-% %ylim([-35 35]);
-% hd = legend("Elevation");
-% set(hd, 'Interpreter','latex');
