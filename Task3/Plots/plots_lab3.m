@@ -5,14 +5,13 @@ t = 0:delta_t:plot_time;
 delta_t_meas = 0.002;
 meas_end_indice = plot_time/delta_t_meas;
 
-figure(1);
-
-run0 = load("lq1.mat").u_lambda_r_p_pdot;
+% when in folder Task3, and Plots needs to be added to path
+run0 = load("Data/lq1.mat").u_lambda_r_p_pdot;
 run0_time = run0(1,1:meas_end_indice);
 run0_input = run0(2,1:meas_end_indice);
 run0_travel = run0(3,1:meas_end_indice);
 
-run1 = load("lq2.mat").u_lambda_r_p_pdot;
+run1 = load("Data/lq2.mat").u_lambda_r_p_pdot;
 run1_time = run1(1,1:meas_end_indice);
 run1_input = run1(2,1:meas_end_indice);
 run1_travel = run1(3,1:meas_end_indice);
@@ -20,11 +19,13 @@ run1_r = run1(4,1:meas_end_indice);
 run1_p = run1(5,1:meas_end_indice);
 run1_pdot = run1(6,1:meas_end_indice);
 
-run2 = load("lq3.mat").u_lambda_r_p_pdot;
+run2 = load("Data/lq3.mat").u_lambda_r_p_pdot;
 run2_time = run2(1,1:meas_end_indice);
 run2_input = run2(2,1:meas_end_indice);
 run2_travel = run2(3,1:meas_end_indice);
 
+
+figure(1);
 tiled = tiledlayout(2,2);
 tiled.TileSpacing = 'compact';
 tiled.Padding = 'compact';
