@@ -1,10 +1,10 @@
 delta_t = 0.25;	
-plot_time = 25;
+plot_time = 20;
 t = 0:delta_t:plot_time;
 delta_t_meas = 0.002;
 meas_end_indice = plot_time/delta_t_meas;
 
-task4_run1 = load("Data/task4_1.mat").pc_ec_lambda_r_p_pdot_e_edot;
+task4_run1 = load("Data/task4_9.mat").pc_ec_lambda_r_p_pdot_e_edot;
 task4_run1_time = task4_run1(1,1:meas_end_indice);
 task4_run1_pc = task4_run1(2,1:meas_end_indice);
 task4_run1_ec = task4_run1(3,1:meas_end_indice);
@@ -16,7 +16,7 @@ task4_run1_e = task4_run1(8,1:meas_end_indice);
 task4_run1_edot = task4_run1(9,1:meas_end_indice);
 
 figure(1);
-tiled = tiledlayout(1,2);
+tiled = tiledlayout(2,2);
 tiled.TileSpacing = 'compact';
 tiled.Padding = 'compact';
 
@@ -32,6 +32,16 @@ title("Closed Loop");
 
 ax2 = nexttile;
 plot(task4_run1_time(1:10:end),rad2deg(task4_run1_e(1:10:end))),grid;
+
+ax3 = nexttile;
+plot(task4_run1_travel(1:10:end),task4_run1_e(1:10:end));
+hold on;
+constrain_x = 0:pi/100:pi;
+plot(constrain_x,0.2*exp(-20*(constrain_x - 2*pi/3).^2));
+
+ax4 = nexttile;
+constrain_x = -3:pi/100:pi*2;
+plot(constrain_x,0.2*exp(-20*(constrain_x - 2*pi/3).^2));
 
 xlabel('time [s]');
 ylabel("e [deg]");

@@ -134,13 +134,13 @@ t = 0:delta_t:delta_t*(length(u1)-1);
 
 %% LQR
 
-% Experiment 1: Task4_1.mat (needs to be cut down to 20s)
+%% Experiment 1: Task4_1.mat (needs to be cut down to 20s)
 % No hypothesis, just test
 % Observation: Elevation has only minor changes
 Q = diag(ones(1,mx));
 R = diag(ones(1,mu));
 
-% Experiment 2: Task4_2.mat
+%% Experiment 2: Task4_2.mat
 % Hypothesis: We want to avoid avoid obstracle, in theory we would want to
 % weight the elevation to avoid obstracle, but we don't take into account
 % the relation between pitch and elevation. 
@@ -152,7 +152,7 @@ R = diag(ones(1,mu));
 Q = diag([1 1 1 1 20 1]);
 R = diag([1 1]);
 
-% Experiment 3: Task4_3.mat
+%% Experiment 3: Task4_3.mat
 % Hypothesis: 
 % Observation: Adjusted ALPHA = 0.5 to make the helicopter reach max
 % optimal elevation closer to equilibirum point as the effect of elevation
@@ -160,13 +160,39 @@ R = diag([1 1]);
 Q = diag([1 1 1 1 20 1]);
 R = diag([1 1]);
 
-% Experiment 4: Task4_4.mat
+%% Experiment 4: Task4_4.mat
 % Hypothesis: Most probably not reach right elevation, but result will be
 % more visible than in (1) as the system now follows a "proper" constraint.
 % ALPHA = 0.5
 % Observation: Surprisingly, the helicopter followed the trajectory well.
-Q = diag([1 1 1 1 1 1]);
+%Q = diag([1 1 1 1 1 1]);
+%R = diag([1 1]);
+
+%% Experiment 5 18.04: Task4_5.mat
+% alpha 0.2
+Q = diag([1 1 1 1 20 1]);
 R = diag([1 1]);
+
+%% Experiment 6 18.04: Task4_6.mat
+% alpha 0.2
+Q = diag([1 1 1 1 200 1]);
+R = diag([1 1]);
+
+%% Experiment 7 18.04: Task4_7.mat
+% alpha 0.2
+Q = diag([100 1 1 1 200 1]);
+R = diag([1 1]);
+
+%% Experiment 8 18.04: Task4_8.mat
+% alpha 0.2
+Q = diag([100 1 1 1 200 50]);
+R = diag([1 1]);
+
+%% Experiment 9 18.04: Task4_9.mat
+% alpha 0.2
+Q = diag([100 1 1 1 50 10]);
+R = diag([1 1]);
+
 %% Optimal trajectory and input
 [K,P,e] = dlqr(Ad,Bd,Q,R);
 
@@ -215,6 +241,10 @@ grid on; grid minor;
 xlabel('tid (s)')
 ylabel('edot');
 sgtitle("$\alpha$ = " + alpha + "$\quad \beta$ = " + beta, 'interpreter', 'latex');
+
+figure(3);
+constrain_x = 0:pi/100:pi;
+plot(constrain_x,0.5*exp(-20*(constrain_x - 2*pi/3).^2));
 %% Timeseries object
 
 p_c = timeseries(u1,t);
