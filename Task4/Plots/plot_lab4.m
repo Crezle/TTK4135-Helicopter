@@ -1,50 +1,99 @@
+num_of_runs = 9;
+
 delta_t = 0.25;	
-plot_time = 20;
-t = 0:delta_t:plot_time;
-delta_t_meas = 0.002;
-meas_end_indice = plot_time/delta_t_meas;
+sim_time = 20;
+init_time = 5;
+sample_time = 0.002;
+datapoints = sim_time/sample_time;
+traj_datapoints = sim_time/delta_t;
+init_points = init_time/sample_time;
+traj_init_points = init_time/delta_t; %Accounting for x0 also
 
-task4_run1 = load("Data/task4_9.mat").pc_ec_lambda_r_p_pdot_e_edot;
-task4_run1_time = task4_run1(1,1:meas_end_indice);
-task4_run1_pc = task4_run1(2,1:meas_end_indice);
-task4_run1_ec = task4_run1(3,1:meas_end_indice);
-task4_run1_travel = task4_run1(4,1:meas_end_indice);
-task4_run1_r = task4_run1(5,1:meas_end_indice);
-task4_run1_p = task4_run1(6,1:meas_end_indice);
-task4_run1_pdot = task4_run1(7,1:meas_end_indice);
-task4_run1_e = task4_run1(8,1:meas_end_indice);
-task4_run1_edot = task4_run1(9,1:meas_end_indice);
+ratio = delta_t / sample_time;
 
-figure(1);
-tiled = tiledlayout(2,2);
-tiled.TileSpacing = 'compact';
-tiled.Padding = 'compact';
+task4_traj = load("../Data/task4_traj.mat").task4_traj;
+t_traj = task4_traj(1,traj_init_points:traj_datapoints);
+p_c_traj = task4_traj(2,traj_init_points:traj_datapoints);
+e_c_traj = task4_traj(3,traj_init_points:traj_datapoints);
+lambda_traj = task4_traj(4,traj_init_points:traj_datapoints);
+r_traj = task4_traj(5,traj_init_points:traj_datapoints);
+p_traj = task4_traj(6,traj_init_points:traj_datapoints);
+pdot_traj = task4_traj(7,traj_init_points:traj_datapoints);
+e_traj = task4_traj(8,traj_init_points:traj_datapoints);
+edot_traj = task4_traj(9,traj_init_points:traj_datapoints);
 
-ax1 = nexttile;
-plot(task4_run1_time(1:10:end),rad2deg(task4_run1_travel(1:10:end))),grid;
+for i=1:num_of_runs
 
-xlabel('time [s]');
-ylabel("\lambda [deg]");
-%ylim([-35 35]);
-hd = legend("Travel");
-set(hd, 'Interpreter','latex')
-title("Closed Loop");
+    task4_run = load("../Data/task4_" + i + ".mat").pc_ec_lambda_r_p_pdot_e_edot;
+    t = task4_run(1,init_points:ratio:datapoints);
+    p_c = task4_run(2,init_points:ratio:datapoints);
+    e_c = task4_run(3,init_points:ratio:datapoints);
+    lambda = task4_run(4,init_points:ratio:datapoints);
+    r = task4_run(5,init_points:ratio:datapoints);
+    p = task4_run(6,init_points:ratio:datapoints);
+    pdot = task4_run(7,init_points:ratio:datapoints);
+    e = task4_run(8,init_points:ratio:datapoints);
+    edot = task4_run(9,init_points:ratio:datapoints);
+    
+    lambda_constraint = linspace(0,pi,61);
+    e_constraint = 0.2*exp(-20*(lambda_constraint - 2*pi/3).^2);
+    
+    
+    figure(i);
+    clf;
+    subplot(3,1,1);
+    plot(t,rad2deg(lambda)); grid on; grid minor; hold on;
+    plot(t_traj,rad2deg(lambda_traj));
+    legend("Actual trajectory", "Calculated trajectory")
+    title("Travel");
+    
+    subplot(3,1,2);
+    plot(t,rad2deg(e)); grid on; grid minor; hold on;
+    plot(t_traj,rad2deg(e_traj));
+    legend("Actual trajectory", "Calculated trajectory")
+    title("Elevation");
+    
+    subplot(3,1,3);
+    plot(rad2deg(lambda),rad2deg(e)); grid on; grid minor; hold on;
+    plot(rad2deg(lambda_traj),rad2deg(e_traj));
+    plot(rad2deg(lambda_constraint),rad2deg(e_constraint));
+    legend("Actual trajectory", "Calculated trajectory", "Constraint");
+    title("Helicopter trajectory");
+    
+    sgtitle("Run " + i);
 
-ax2 = nexttile;
-plot(task4_run1_time(1:10:end),rad2deg(task4_run1_e(1:10:end))),grid;
+end
 
-ax3 = nexttile;
-plot(task4_run1_travel(1:10:end),task4_run1_e(1:10:end));
-hold on;
-constrain_x = 0:pi/100:pi;
-plot(constrain_x,0.2*exp(-20*(constrain_x - 2*pi/3).^2));
-
-ax4 = nexttile;
-constrain_x = -3:pi/100:pi*2;
-plot(constrain_x,0.2*exp(-20*(constrain_x - 2*pi/3).^2));
-
-xlabel('time [s]');
-ylabel("e [deg]");
-%ylim([-35 35]);
-hd = legend("Elevation");
-set(hd, 'Interpreter','latex');
+% figure(10);
+% tiled = tiledlayout(2,2);
+% tiled.TileSpacing = 'compact';
+% tiled.Padding = 'compact';
+% 
+% ax1 = nexttile;
+% plot(t(1:10:end),rad2deg(lambda(1:10:end))),grid;
+% 
+% xlabel('time [s]');
+% ylabel("\lambda [deg]");
+% %ylim([-35 35]);
+% hd = legend("Travel");
+% set(hd, 'Interpreter','latex')
+% title("Closed Loop");
+% 
+% ax2 = nexttile;
+% plot(t(1:10:end),rad2deg(e(1:10:end))),grid;
+% 
+% ax3 = nexttile;
+% plot(lambda(1:10:end),e(1:10:end));
+% hold on;
+% constrain_x = 0:pi/100:pi;
+% plot(constrain_x,0.2*exp(-20*(constrain_x - 2*pi/3).^2));
+% 
+% ax4 = nexttile;
+% constrain_x = -3:pi/100:pi*2;
+% plot(constrain_x,0.2*exp(-20*(constrain_x - 2*pi/3).^2));
+% 
+% xlabel('time [s]');
+% ylabel("e [deg]");
+% %ylim([-35 35]);
+% hd = legend("Elevation");
+% set(hd, 'Interpreter','latex');

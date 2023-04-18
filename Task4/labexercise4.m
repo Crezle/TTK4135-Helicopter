@@ -4,7 +4,7 @@
 init07; % Change this to the init file corresponding to your helicopter
 
 % Discrete time system model. x = [lambda r p p_dot]'
-delta_t = 0.25;	
+h = 0.25;	
 q1 = 1;
 q2 = 1;
 lambda_0 = 0;
@@ -21,20 +21,18 @@ Ac = [0 1 0 0 0 0;
     0 0 0 0 0 1;
     0 0 0 0 -K_3*K_ep -K_3*K_ed];
 
-Bc = [0 0;
+bc = [0 0;
     0 0;
     0 0;
     K_1*K_pp 0;
     0 0;
     0 K_3*K_ep];
 
+nx = size(Ac,2); % Number of states (number of columns in A)
+nu = size(bc,2); % Number of inputs(number of columns in B)
 
-
-mx = size(Ac,2); % Number of states (number of columns in A)
-mu = size(Bc,2); % Number of inputs(number of columns in B)
-
-Ad = eye(mx) + delta_t*Ac;
-Bd = delta_t*Bc;
+Ad = eye(nx) + h*Ac;
+bd = h*bc;
 
 % Number of states and inputs
 
@@ -52,7 +50,7 @@ x0 = [x1_0 x2_0 x3_0 x4_0 x5_0 x6_0]';            % Initial values
 %from lab exercice
 N  = 40;                                  % Time horizon for states
 M  = N;                                 % Time horizon for inputs
-z  = zeros(N*mx+M*mu,1);                % Initialize z for the whole horizon
+z  = zeros(N*nx+M*nu,1);                % Initialize z for the whole horizon
 z0 = z;
 z0(1) = x1_0;% Initial value for optimization
 
@@ -60,62 +58,61 @@ z0(1) = x1_0;% Initial value for optimization
 ul 	    = [-pi/6; -inf];                    % Lower bound on control
 uu 	    = [pi/6; inf];                     % Upper bound on control
 
-xl      = -Inf*ones(mx,1);              % Lower bound on states (no bound)
-xu      = Inf*ones(mx,1);               % Upper bound on states (no bound)
+xl      = -Inf*ones(nx,1);              % Lower bound on states (no bound)
+xu      = Inf*ones(nx,1);               % Upper bound on states (no bound)
 %xl(3)   = ul;                           % Lower bound on state x3
 %xu(3)   = uu;                           % Upper bound on state x3
 
 % Generate constraints on measurements and inputs
 [vlb,vub]       = gen_constraints(N,M,xl,xu,ul,uu); % hint: gen_constraints
-vlb(N*mx+M*mu)  = 0;                    % We want the last input to be zero
-vub(N*mx+M*mu)  = 0;                    % We want the last input to be zero
+vlb(N*nx+M*nu)  = 0;                    % We want the last input to be zero
+vub(N*nx+M*nu)  = 0;                    % We want the last input to be zero
 
 % Generate the matrix Q and the vector c (objecitve function weights in the QP problem) 
-Q1 = zeros(mx,mx);
-Q1(1,1) = 2;                            % Weight on state x1
-Q1(2,2) = 0;                            % Weight on state x2
-Q1(3,3) = 0;                            % Weight on state x3
-Q1(4,4) = 0;                            % Weight on state x4
-Q1(5,5) = 0;                            % Weight on state x5
-Q1(6,6) = 0;                            % Weight on state x6
+Q = zeros(nx,nx);
+Q(1,1) = 2;                            % Weight on state x1
+Q(2,2) = 0;                            % Weight on state x2
+Q(3,3) = 0;                            % Weight on state x3
+Q(4,4) = 0;                            % Weight on state x4
+Q(5,5) = 0;                            % Weight on state x5
+Q(6,6) = 0;                            % Weight on state x6
 
-P1 = zeros(mu,mu);
-P1(1,1) = 2*q1; %0;                           % Weight on input
-P1(2,2) = 2*q2;
-Q = gen_q(Q1, P1, N, M);
+R = zeros(nu,nu);
+R(1,1) = 2*q1; %0;                           % Weight on input
+R(2,2) = 2*q2;
+G = gen_q(Q, R, N, M);
 
 %% Generate system matrixes for linear model
-Aeq = gen_aeq(Ad, Bd, N, mx, mu);             % Generate A, hint: gen_aeq
-beq = [Ad*x0; zeros((mx*N)-mx,1)];             % Generate b
+Aeq = gen_aeq(Ad, bd, N, nx, nu);             % Generate A, hint: gen_aeq
+beq = [Ad*x0; zeros((nx*N)-nx,1)];             % Generate b
 
 %% Solve QP problem with linear model
 options = optimoptions(@fmincon,'Algorithm','sqp','MaxFunctionEvaluations',5*10^4);
-params = [N lambda_f lambda_t alpha beta mx];
-tic
-z = fmincon(@(z)obj_fun(z,Q),z0,[],[],Aeq,beq,vlb,vub,@(x)nonlcon(x,params),options);
-t1=toc;
+params = [N lambda_f lambda_t alpha beta nx];
+
+z = fmincon(@(z)obj_fun(z,G),z0,[],[],Aeq,beq,vlb,vub,@(x)nonlcon(x,params),options);
 
 % Calculate objective value
-% phi1 = 0.0;
-% PhiOut = zeros(N*mx+M*mu,1);
-% for i=1:N*mx+M*mu
-%   phi1=phi1+Q(i,i)*z(i)*z(i);
-%   PhiOut(i) = phi1;
-% end
+phi1 = 0.0;
+PhiOut = zeros(N*nx+M*nu,1);
+for i=1:N*nx+M*nu
+  phi1=phi1+G(i,i)*z(i)*z(i);
+  PhiOut(i) = phi1;
+end
 
 %% Extract control inputs and states
-u1 = [z(N*mx+1:mu:N*mx+M*mu-1);z(N*mx+M*mu-1)]; % Control input from solution
-u2 = [z(N*mx+2:mu:N*mx+M*mu);z(N*mx+M*mu)];
+u1 = [z(N*nx+1:nu:N*nx+M*nu-1);z(N*nx+M*nu-1)]; % Control input from solution
+u2 = [z(N*nx+2:nu:N*nx+M*nu);z(N*nx+M*nu)];
 
-x1 = [x0(1);z(1:mx:N*mx)];              % State x1 from solution
-x2 = [x0(2);z(2:mx:N*mx)];              % State x2 from solution
-x3 = [x0(3);z(3:mx:N*mx)];              % State x3 from solution
-x4 = [x0(4);z(4:mx:N*mx)];              % State x4 from solution
-x5 = [x0(5);z(5:mx:N*mx)];              % State x5 from solution
-x6 = [x0(6);z(6:mx:N*mx)];              % State x6 from solution
+x1 = [x0(1);z(1:nx:N*nx)];              % State x1 from solution
+x2 = [x0(2);z(2:nx:N*nx)];              % State x2 from solution
+x3 = [x0(3);z(3:nx:N*nx)];              % State x3 from solution
+x4 = [x0(4);z(4:nx:N*nx)];              % State x4 from solution
+x5 = [x0(5);z(5:nx:N*nx)];              % State x5 from solution
+x6 = [x0(6);z(6:nx:N*nx)];              % State x6 from solution
 
 
-num_variables = 5/delta_t;
+num_variables = 5/h;
 zero_padding = zeros(num_variables,1);
 unit_padding  = ones(num_variables,1);
 
@@ -130,15 +127,15 @@ x6  = [zero_padding; x6; zero_padding];
 
 %% Feedback
 
-t = 0:delta_t:delta_t*(length(u1)-1);
-
-%% LQR
+t = 0:h:h*(length(u1)-1);
+task4_traj = [t; u1'; u2'; x1'; x2'; x3'; x4'; x5'; x6'];
+save("Data/task4_traj.mat","task4_traj");
 
 %% Experiment 1: Task4_1.mat (needs to be cut down to 20s)
 % No hypothesis, just test
 % Observation: Elevation has only minor changes
-Q = diag(ones(1,mx));
-R = diag(ones(1,mu));
+Q = diag(ones(1,nx));
+R = diag(ones(1,nu));
 
 %% Experiment 2: Task4_2.mat
 % Hypothesis: We want to avoid avoid obstracle, in theory we would want to
@@ -194,7 +191,7 @@ Q = diag([100 1 1 1 50 10]);
 R = diag([1 1]);
 
 %% Optimal trajectory and input
-[K,P,e] = dlqr(Ad,Bd,Q,R);
+[K,P,e] = dlqr(Ad,bd,Q,R);
 
 xopt = [x1 x2 x3 x4 x5 x6];
 uopt = [u1 u2];
@@ -204,7 +201,7 @@ opt_input = timeseries(uopt,t);
 %% Plotting
 
 % 
-figure(2)
+figure(1);
 subplot(421);
 stairs(t,u1);
 grid on; grid minor;
@@ -242,9 +239,6 @@ xlabel('tid (s)')
 ylabel('edot');
 sgtitle("$\alpha$ = " + alpha + "$\quad \beta$ = " + beta, 'interpreter', 'latex');
 
-figure(3);
-constrain_x = 0:pi/100:pi;
-plot(constrain_x,0.5*exp(-20*(constrain_x - 2*pi/3).^2));
 %% Timeseries object
 
 p_c = timeseries(u1,t);
@@ -256,9 +250,9 @@ p_e = timeseries(u2,t);
 %run2 = load('open_loop_run2.mat').u_lambda_r_p_pdot;
 
 %% Functions
-function cost = obj_fun(x,Q)
+function cost = obj_fun(x,G)
 
-    cost = 0.5*x'*Q*x;
+    cost = 0.5*x'*G*x;
     
 end
 
@@ -267,13 +261,13 @@ function [c,ceq] = nonlcon(x,params)
     lambda_t = params(3);
     alpha = params(4);
     beta = params(5);
-    mx = params(6);
+    nx = params(6);
     
 %    c = zeros(1,N);
 %     for i = 1:N
 %         c(i) = alpha*exp(-beta*x(6*i - 5)^2) - x(6*i - 1);
 %     end
-    c = alpha*exp(-beta*(x(1:mx:mx*N) - lambda_t).^2) - x(5:mx:mx*N);
+    c = alpha*exp(-beta*(x(1:nx:nx*N) - lambda_t).^2) - x(5:nx:nx*N);
     ceq = [];
     
 end
