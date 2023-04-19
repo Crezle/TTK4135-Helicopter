@@ -1,4 +1,4 @@
-num_of_runs = 9;
+num_of_runs = 5;
 
 delta_t = 0.25;	
 sim_time = 20;
@@ -43,75 +43,62 @@ for i=1:num_of_runs
 
     if i == 1
         subplot(3,1,1);
-        plot(t,rad2deg(lambda)); grid on; grid minor; hold on;
-        Legend1=Cell(num_of_runs+1,1);
-        Legend1{1}="Calculated trajectory";
-        Legend1{i+1}="Actual trajectory, Run " + i;
+        plot(t_traj,rad2deg(lambda_traj),'LineWidth',2,'color','b','LineStyle',':');
+        grid on; grid minor; hold on;
+        plot(t,rad2deg(lambda));
+        Legend1=cell(num_of_runs+1,1);
+        Legend1{1}="Target";
+        Legend1{i+1}="Run " + i;
         title("Travel");
         
         subplot(3,1,2);
-        plot(t_traj,rad2deg(e_traj)); grid on; grid minor; hold on;
-        Legend2=Cell(num_of_runs+1,1);
-        Legend2{1}="Calculated trajectory";
-        Legend2{i+1}="Actual trajectory, Run " + i;
+        plot(t_traj,rad2deg(e_traj),'LineWidth',2,'color','b','LineStyle',':');
+        grid on; grid minor; hold on;
+        plot(t,rad2deg(e));
+        Legend2=cell(num_of_runs+1,1);
+        Legend2{1}="Target";
+        Legend2{i+1}="Run " + i;
         title("Elevation");
         
         subplot(3,1,3);
-        plot(rad2deg(lambda_traj),rad2deg(e_traj)); grid on; grid minor; hold on;
-        plot(rad2deg(lambda_constraint),rad2deg(e_constraint));
-        Legend3=Cell(num_of_runs+2,1);
-        Legend3{1}="Calculated trajectory";
+        plot(rad2deg(lambda_traj),rad2deg(e_traj),'LineWidth',2,'color','b','LineStyle',':');
+        grid on; grid minor; hold on;
+        plot(rad2deg(lambda_constraint),rad2deg(e_constraint),'LineWidth',2,'color','k');
+        plot(rad2deg(lambda),rad2deg(e));
+        Legend3=cell(num_of_runs+2,1);
+        Legend3{1}="Target";
         Legend3{2}="Constraint";
-        Legend3{i+2}="Actual trajectory, Run " + i;
+        Legend3{i+2}="Run " + i;
         title("Helicopter trajectory");
     elseif i == num_of_runs
         subplot(3,1,1);
         plot(t,rad2deg(lambda)); grid on; grid minor; hold on;
-        Legend1{i+1}="Actual trajectory, Run " + i;
-        legend(Legend1);
+        Legend1{i+1}="Run " + i;
+        legend(Legend1,'Location','southwest');
         title("Travel");
         
         subplot(3,1,2);
-        plot(t_traj,rad2deg(e_traj)); grid on; grid minor; hold on;
-        Legend2{i+1}="Actual trajectory, Run " + i;
-        legend(Legend2);
+        plot(t,rad2deg(e)); grid on; grid minor; hold on;
+        Legend2{i+1}="Run " + i;
+        legend(Legend2,'Location','northwest');
         title("Elevation");
         
         subplot(3,1,3);
-        plot(rad2deg(lambda_traj),rad2deg(e_traj)); grid on; grid minor; hold on;
-        plot(rad2deg(lambda_constraint),rad2deg(e_constraint));
-        Legend3{i+2}="Actual trajectory, Run " + i;
-        legend(Legend3);
+        plot(rad2deg(lambda),rad2deg(e)); grid on; grid minor; hold on;
+        Legend3{i+2}="Run " + i;
+        legend(Legend3,'Location','southwest');
         title("Helicopter trajectory");
     else
         subplot(3,1,1);
         plot(t,rad2deg(lambda)); grid on; grid minor; hold on;
-        %plot(t_traj,rad2deg(lambda_traj));
-        legappend("Actual trajectory, Run " + i);
-        %legend("Actual trajectory, Run " + i, "Calculated trajectory")
-        %title("Travel");
+        Legend1{i+1}="Run " + i;
         
         subplot(3,1,2);
         plot(t,rad2deg(e)); grid on; grid minor; hold on;
-        %plot(t_traj,rad2deg(e_traj));
-        legappend("Actual trajectory, Run " + i);
-        %legend("Actual trajectory, Run " + i, "Calculated trajectory")
-        %title("Elevation");
+        Legend2{i+1}="Run " + i;
         
         subplot(3,1,3);
         plot(rad2deg(lambda),rad2deg(e)); grid on; grid minor; hold on;
-        %plot(rad2deg(lambda_traj),rad2deg(e_traj));
-        %plot(rad2deg(lambda_constraint),rad2deg(e_constraint));
-        Legend3{i+2}="Actual trajectory, Run " + i;
-        %legend("Actual trajectory, Run " + i, "Calculated trajectory", "Constraint");
-        %title("Helicopter trajectory");
+        Legend3{i+2}="Run " + i;
     end
-
-    
-    
-    
-    
-    
-    sgtitle("Run " + i);
-
 end
