@@ -198,56 +198,11 @@ uopt = [u1 u2];
 
 x_traj = timeseries(xopt,t);
 opt_input = timeseries(uopt,t);
-%% Plotting
-
-% 
-figure(1);
-subplot(421);
-stairs(t,u1);
-grid on; grid minor;
-ylabel('pc');
-subplot(422);
-stairs(t,u2);
-grid on; grid minor;
-ylabel('ec');
-subplot(423);
-plot(t,x1,'m',t,x1,'mo');
-grid on; grid minor;
-ylabel('lambda');
-subplot(424);
-plot(t,x2,'m',t,x2','mo');
-grid on; grid minor;
-ylabel('r');
-subplot(425);
-plot(t,x3,'m',t,x3,'mo');
-grid on; grid minor;
-ylabel('p');
-subplot(426);
-plot(t,x4,'m',t,x4,'mo');
-grid on; grid minor;
-xlabel('tid (s)')
-ylabel('pdot');
-subplot(427);
-plot(t,x5,'m',t,x5,'mo')
-grid on; grid minor;
-xlabel('tid (s)')
-ylabel('e');
-subplot(428);
-plot(t,x6,'m',t,x6,'mo')
-grid on; grid minor;
-xlabel('tid (s)')
-ylabel('edot');
-sgtitle("$\alpha$ = " + alpha + "$\quad \beta$ = " + beta, 'interpreter', 'latex');
 
 %% Timeseries object
 
 p_c = timeseries(u1,t);
 p_e = timeseries(u2,t);
-
-%% Extraction of timeseries
-
-%run1 = load('open_loop_run1.mat').u_lambda_r_p_pdot;
-%run2 = load('open_loop_run2.mat').u_lambda_r_p_pdot;
 
 %% Functions
 function cost = obj_fun(x,G)
@@ -271,21 +226,3 @@ function [c,ceq] = nonlcon(x,params)
     ceq = [];
     
 end
-
-% function x_dot = f(x,u) % x_k+1 = x_k + h*f(x,u)
-%     lambda = x(1);
-%     r = x(2);
-%     p = x(3);
-%     p_dot = x(4);
-%     e = x(5);
-%     e_dot = x(6);
-%     pc = u(1);
-%     ec = u(2);
-%     
-%     lambda_dot = r;
-%     r_dot = -K_2*p;
-%     p_dot;
-%     p_ddot = K_1*K_pp*p - K_1*K_pd*K_pp*p_dot;
-%     e_dot;
-%     e_ddot = C_p*V_s*cos(p) + C_e*cos(e);
-% end
