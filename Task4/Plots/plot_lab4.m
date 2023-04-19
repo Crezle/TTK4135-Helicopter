@@ -1,4 +1,5 @@
 num_of_runs = 6;
+constraint = false; %True/False if want to plot constraint
 
 delta_t = 0.25;	
 sim_time = 20;
@@ -88,12 +89,14 @@ for i=1:num_of_runs
         subplot(3,1,3);
         plot(rad2deg(lambda_traj),rad2deg(e_traj),'LineWidth',2,'color','b','LineStyle',':');
         grid on; grid minor; hold on;
-        plot(rad2deg(lambda_constraint),rad2deg(e_constraint),'LineWidth',2,'color','k');
         plot(rad2deg(lambda),rad2deg(e));
-        Legend3=cell(num_of_runs+2,1);
+        if constraint
+            Legend3=cell(num_of_runs+2,1);
+        else
+            Legend3=cell(num_of_runs+1,1);
+        end
         Legend3{1}="Target";
-        Legend3{2}="Constr.";
-        Legend3{i+2}="Run " + i + ", Error: " + error_traj(i);
+        Legend3{i+1}="Run " + i + ", Error: " + error_traj(i);
         title("Helicopter trajectory");
     elseif i == num_of_runs
         subplot(3,1,1);
@@ -114,7 +117,11 @@ for i=1:num_of_runs
         
         subplot(3,1,3);
         plot(rad2deg(lambda),rad2deg(e)); grid on; grid minor; hold on;
-        Legend3{i+2}="Run " + i + ", Error: " + error_traj(i);
+        Legend3{i+1}="Run " + i + ", Error: " + error_traj(i);
+        if constraint
+            plot(rad2deg(lambda_constraint),rad2deg(e_constraint),'LineWidth',2,'color','k');
+            Legend3{i+2}="Constr.";
+        end
         legend(Legend3,'Location','northwest');
         xlabel("Travel, $\lambda$[deg]","interpreter","latex");
         ylabel("Elevation, $e$[deg]","interpreter","latex");
@@ -130,6 +137,6 @@ for i=1:num_of_runs
         
         subplot(3,1,3);
         plot(rad2deg(lambda),rad2deg(e)); grid on; grid minor; hold on;
-        Legend3{i+2}="Run " + i + ", Error: " + error_traj(i);
+        Legend3{i+1}="Run " + i + ", Error: " + error_traj(i);
     end
 end
