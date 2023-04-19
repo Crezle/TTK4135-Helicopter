@@ -137,7 +137,7 @@ save("Data/task4_traj.mat","task4_traj");
 Q = diag(ones(1,nx));
 R = diag(ones(1,nu));
 
-%% Experiment 2: Task4_2.mat
+%% Experiment 2: Task4_2.mat (PUT IN NEW FOLDER)
 % Hypothesis: We want to avoid avoid obstracle, in theory we would want to
 % weight the elevation to avoid obstracle, but we don't take into account
 % the relation between pitch and elevation. 
@@ -149,7 +149,7 @@ R = diag(ones(1,nu));
 Q = diag([1 1 1 1 20 1]);
 R = diag([1 1]);
 
-%% Experiment 3: Task4_3.mat
+%% Experiment 3: Task4_3.mat (PUT IN NEW FOLDER)
 % Hypothesis: 
 % Observation: Adjusted ALPHA = 0.5 to make the helicopter reach max
 % optimal elevation closer to equilibirum point as the effect of elevation
@@ -157,7 +157,7 @@ R = diag([1 1]);
 Q = diag([1 1 1 1 20 1]);
 R = diag([1 1]);
 
-%% Experiment 4: Task4_4.mat
+%% Experiment 4: Task4_4.mat (PUT IN NEW FOLDER)
 % Hypothesis: Most probably not reach right elevation, but result will be
 % more visible than in (1) as the system now follows a "proper" constraint.
 % ALPHA = 0.5
@@ -165,27 +165,27 @@ R = diag([1 1]);
 %Q = diag([1 1 1 1 1 1]);
 %R = diag([1 1]);
 
-%% Experiment 5 18.04: Task4_5.mat
+%% Experiment 5 18.04: Task4_5.mat (RENAMED: task4_2.mat)
 % alpha 0.2
 Q = diag([1 1 1 1 20 1]);
 R = diag([1 1]);
 
-%% Experiment 6 18.04: Task4_6.mat
+%% Experiment 6 18.04: Task4_6.mat (RENAMED: task4_3.mat)
 % alpha 0.2
 Q = diag([1 1 1 1 200 1]);
 R = diag([1 1]);
 
-%% Experiment 7 18.04: Task4_7.mat
+%% Experiment 7 18.04: Task4_7.mat (RENAMED: task4_4.mat)
 % alpha 0.2
 Q = diag([100 1 1 1 200 1]);
 R = diag([1 1]);
 
-%% Experiment 8 18.04: Task4_8.mat
+%% Experiment 8 18.04: Task4_8.mat (RENAMED: task4_5.mat)
 % alpha 0.2
 Q = diag([100 1 1 1 200 50]);
 R = diag([1 1]);
 
-%% Experiment 9 18.04: Task4_9.mat
+%% Experiment 9 18.04: Task4_9.mat (RENAMED: task4_6.mat)
 % alpha 0.2
 Q = diag([100 1 1 1 50 10]);
 R = diag([1 1]);
