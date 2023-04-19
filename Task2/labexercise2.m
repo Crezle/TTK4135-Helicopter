@@ -43,8 +43,8 @@ uu 	    = p_constr;                             % Upper bound on control
 
 xl          = -Inf*ones(nx,1);                  % Lower bound on states (no bound)
 xu          = Inf*ones(nx,1);                   % Upper bound on states (no bound)
-xl(3)       = -p_constr;                        % Add Lower bound on state x3
-xu(3)       = p_constr;                         % Add Upper bound on state x3
+%xl(3)       = -p_constr;                        % Add Lower bound on state x3
+%xu(3)       = p_constr;                         % Add Upper bound on state x3
 
 % Generate constraints on measurements and inputs
 [vlb,vub]       = gen_constraints(N,M,xl,xu,ul,uu);
@@ -97,79 +97,43 @@ x2  = [zero_padding; x2; zero_padding];
 x3  = [zero_padding; x3; zero_padding];
 x4  = [zero_padding; x4; zero_padding];
 
-%% Timeseries object for sinulink
+%% Timeseries object for simulink
 
 t = 0:h:h*(length(u)-1);
 p_c = timeseries(u,t);
 
+%% Save calculated data
+data = [t; u'; x1'; x2'; x3'; x4'];
+save("Data/calculated_traj_3","t","u","x1","x2","x3","x4");
 %% Plot quadprog results
 
-figure(1)
-subplot(511);
-stairs(t,u);
-grid on; grid minor;
-ylabel('$u$',"interpreter","latex");
+% figure(1)
+% subplot(511);
+% stairs(t,u);
+% grid on; grid minor;
+% ylabel('$u$',"interpreter","latex");
+% 
+% subplot(512);
+% plot(t,x1,'m',t,x1,'mo');
+% grid on; grid minor;
+% ylabel('$\lambda$',"interpreter","latex");
+% 
+% subplot(513);
+% plot(t,x2,'m',t,x2','mo');
+% grid on; grid minor;
+% ylabel('$r$',"interpreter","latex");
+% 
+% subplot(514);
+% plot(t,x3,'m',t,x3,'mo');
+% grid on; grid minor;
+% ylabel('$p$',"interpreter","latex");
+% 
+% subplot(515);
+% plot(t,x4,'m',t,x4','mo');
+% grid on; grid minor;
+% xlabel('time ($s$)',"interpreter","latex")
+% ylabel('$\dot{p}$',"interpreter","latex");
+% 
+% sgtitle("State and Input constrained, $q$ = " + q + ",\quad $\phi$ = " + phi,"interpreter","latex");
+% 
 
-subplot(512);
-plot(t,x1,'m',t,x1,'mo');
-grid on; grid minor;
-ylabel('$\lambda$',"interpreter","latex");
-
-subplot(513);
-plot(t,x2,'m',t,x2','mo');
-grid on; grid minor;
-ylabel('$r$',"interpreter","latex");
-
-subplot(514);
-plot(t,x3,'m',t,x3,'mo');
-grid on; grid minor;
-ylabel('$p$',"interpreter","latex");
-
-subplot(515);
-plot(t,x4,'m',t,x4','mo');
-grid on; grid minor;
-xlabel('time ($s$)',"interpreter","latex")
-ylabel('$\dot{p}$',"interpreter","latex");
-
-sgtitle("State and Input constrained, $q$ = " + q + ",\quad $\phi$ = " + phi,"interpreter","latex");
-
-
-%% Extraction of timeseries and plot of helicopter runs
-
-runX = load('Data/open_loop_run1_stateandinputconstrained.mat').u_lambda_r_p_pdot; % Specify file to load
-
-runX_time = runX(1,:);
-runX_input = runX(2,:);
-runX_travel = runX(3,:);
-runX_traveldt = runX(4,:);
-runX_pitch = runX(5,:);
-runX_pitchdt = runX(6,:);
-
-figure(2)
-subplot(511);
-stairs(runX_time,runX_input);
-grid on; grid minor;
-ylabel('$u$',"interpreter","latex");
-
-subplot(512);
-plot(runX_time,runX_travel,'m',runX_time,runX_travel);
-grid on; grid minor;
-ylabel('$\lambda$',"interpreter","latex");
-
-subplot(513);
-plot(runX_time,runX_traveldt,'m',runX_time,runX_traveldt');
-grid on; grid minor;
-ylabel('$r$',"interpreter","latex");
-
-subplot(514);
-plot(runX_time,runX_pitch,'m',runX_time,runX_pitch);
-grid on; grid minor;
-ylabel('$p$',"interpreter","latex");
-
-subplot(515);
-plot(runX_time,runX_pitchdt,'m',runX_time,runX_pitchdt');
-grid on; grid minor;
-xlabel('time ($s$)',"interpreter","latex")
-ylabel('$\dot{p}$',"interpreter","latex");
-
-sgtitle("Helicoper run, State and Input constrained","interpreter","latex");
