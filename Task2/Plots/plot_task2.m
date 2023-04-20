@@ -9,7 +9,7 @@ Color = {'r','g','b'};
 clf;
 
 for i=1:num_of_runs
-    run = load("../Data/open_loop_run" + i).u_lambda_r_p_pdot; % Specify file to load
+    run = load("../Data/run_based_on_q_" + i).u_lambda_r_p_pdot; % Specify file to load
 
     run_time = run(1,:);
     run_input = run(2,:);
@@ -18,7 +18,7 @@ for i=1:num_of_runs
     run_pitch = run(5,:);
     run_pitchdt = run(6,:);
     
-    traj = load("../Data/calculated_traj_" + i);
+    traj = load("../Data/traj_based_on_q_" + i);
     
     traj_t = traj.t;
     traj_p_c = traj.u;

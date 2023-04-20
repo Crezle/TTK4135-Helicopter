@@ -4,7 +4,7 @@ init07;
 
 % Discrete time system model. x = [lambda r p p_dot]'
 h	= 0.25;                             % sampling time
-q = 12;                                  % {0.12, 1.2, 12} for simulation
+q = 0.12;                                  % {0.12, 1.2, 12} for simulation
                                         % q = 1 for helicopter run
 % Continuous state space matrices
 A_c = [0 1 0 0
