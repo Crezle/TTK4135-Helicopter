@@ -1,4 +1,4 @@
-starting_index = 7;
+starting_index = 1;
 num_of_runs = 8;
 constraint = false; %True/False if want to plot constraint
 
