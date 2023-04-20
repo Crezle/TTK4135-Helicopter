@@ -190,6 +190,18 @@ R = diag([1 1]);
 Q = diag([100 1 1 1 50 10]);
 R = diag([1 1]);
 
+%% Experiment 10 20.04: Task4_7.mat
+% Very oscillative pitch, but in terms of travel and elevation, the 
+% tracking of reference was very good.
+Q = diag([100 1 1 1 50 10]);
+R = diag([0.01 0.01]);
+
+%% Experiment 11 20.04: Task4_8.mat
+% Very oscillative pitch, but in terms of travel and elevation, the 
+% tracking of reference was very good.
+Q = diag([100 1 1 1 50 10]);
+R = diag([0.1 0.1]);
+
 %% Optimal trajectory and input
 [K,P,e] = dlqr(Ad,bd,Q,R);
 
