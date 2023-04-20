@@ -1,6 +1,6 @@
 starting_index = 1;
 num_of_runs = 8;
-constraint = false; %True/False if want to plot constraint
+constraint = true; %True/False if want to plot constraint
 
 delta_t = 0.25;	
 sim_time = 20;
