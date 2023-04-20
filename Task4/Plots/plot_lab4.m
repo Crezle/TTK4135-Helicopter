@@ -98,7 +98,7 @@ for i=starting_index:num_of_runs
             Legend3=cell(num_of_runs+1 - (starting_index - 1),1);
         end
         Legend3{1}="Target";
-        Legend3{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_traj(i);
+        Legend3{i-(starting_index-1)+1}="Run " + i;
         title("Helicopter trajectory");
     elseif i == num_of_runs
         subplot(3,1,1);
@@ -119,7 +119,7 @@ for i=starting_index:num_of_runs
         
         subplot(3,1,3);
         plot(rad2deg(lambda),rad2deg(e)); grid on; grid minor; hold on;
-        Legend3{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_traj(i);
+        Legend3{i-(starting_index-1)+1}="Run " + i;
         if constraint
             plot(rad2deg(lambda_constraint),rad2deg(e_constraint),'LineWidth',2,'color','k');
             Legend3{i+2}="Constr.";
@@ -139,6 +139,6 @@ for i=starting_index:num_of_runs
         
         subplot(3,1,3);
         plot(rad2deg(lambda),rad2deg(e)); grid on; grid minor; hold on;
-        Legend3{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_traj(i);
+        Legend3{i-(starting_index-1)+1}="Run " + i;
     end
 end
