@@ -197,8 +197,8 @@ Q = diag([100 1 1 1 50 10]);
 R = diag([0.01 0.01]);
 
 %% Experiment 11 20.04: Task4_8.mat
-% Very oscillative pitch, but in terms of travel and elevation, the 
-% tracking of reference was very good.
+% Less oscillative pitch, but then also doesn't track as well as experiment
+% 10
 Q = diag([100 1 1 1 50 10]);
 R = diag([0.1 0.1]);
 
