@@ -1,5 +1,6 @@
-num_of_runs = 7;
-constraint = true; %True/False if want to plot constraint
+starting_index = 3;
+num_of_runs = 4;
+constraint = false; %True/False if want to plot constraint
 
 delta_t = 0.25;	
 sim_time = 20;
@@ -41,7 +42,7 @@ MSE_edot = zeros(num_of_runs,1);
 
 MSE_traj = zeros(num_of_runs,1);
 
-for i=1:num_of_runs
+for i=starting_index:num_of_runs
 
     task4_run = load("../Data/task4_" + i + ".mat").pc_ec_lambda_r_p_pdot_e_edot;
     t = task4_run(1,init_points:ratio:datapoints);
@@ -68,23 +69,23 @@ for i=1:num_of_runs
     
     
     
-    if i == 1
+    if i == starting_index
         subplot(3,1,1);
         plot(t_traj,rad2deg(lambda_traj),'LineWidth',2,'color','b','LineStyle',':');
         grid on; grid minor; hold on;
         plot(t,rad2deg(lambda));
-        Legend1=cell(num_of_runs+1,1);
+        Legend1=cell(num_of_runs+1 - (starting_index - 1),1);
         Legend1{1}="Target";
-        Legend1{i+1}="Run " + i + ", MSE: " + MSE_lambda(i);
+        Legend1{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_lambda(i);
         title("Travel");
         
         subplot(3,1,2);
         plot(t_traj,rad2deg(e_traj),'LineWidth',2,'color','b','LineStyle',':');
         grid on; grid minor; hold on;
         plot(t,rad2deg(e));
-        Legend2=cell(num_of_runs+1,1);
+        Legend2=cell(num_of_runs+1 - (starting_index - 1),1);
         Legend2{1}="Target";
-        Legend2{i+1}="Run " + i + ", MSE: " + MSE_e(i);
+        Legend2{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_e(i);
         title("Elevation");
         
         subplot(3,1,3);
@@ -92,17 +93,17 @@ for i=1:num_of_runs
         grid on; grid minor; hold on;
         plot(rad2deg(lambda),rad2deg(e));
         if constraint
-            Legend3=cell(num_of_runs+2,1);
+            Legend3=cell(num_of_runs+2 - (starting_index - 1),1);
         else
-            Legend3=cell(num_of_runs+1,1);
+            Legend3=cell(num_of_runs+1 - (starting_index - 1),1);
         end
         Legend3{1}="Target";
-        Legend3{i+1}="Run " + i + ", MSE: " + MSE_traj(i);
+        Legend3{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_traj(i);
         title("Helicopter trajectory");
     elseif i == num_of_runs
         subplot(3,1,1);
         plot(t,rad2deg(lambda)); grid on; grid minor; hold on;
-        Legend1{i+1}="Run " + i + ", MSE: " + MSE_lambda(i);
+        Legend1{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_lambda(i);
         legend(Legend1,'Location','northeast');
         xlabel("Time, $t$[s]","interpreter","latex");
         ylabel("Travel, $\lambda$[deg]","interpreter","latex");
@@ -110,7 +111,7 @@ for i=1:num_of_runs
         
         subplot(3,1,2);
         plot(t,rad2deg(e)); grid on; grid minor; hold on;
-        Legend2{i+1}="Run " + i + ", MSE: " + MSE_e(i);
+        Legend2{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_e(i);
         legend(Legend2,'Location','northeast');
         xlabel("Time, $t$[s]","interpreter","latex");
         ylabel("Elevation, $e$[deg]","interpreter","latex");
@@ -118,7 +119,7 @@ for i=1:num_of_runs
         
         subplot(3,1,3);
         plot(rad2deg(lambda),rad2deg(e)); grid on; grid minor; hold on;
-        Legend3{i+1}="Run " + i + ", MSE: " + MSE_traj(i);
+        Legend3{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_traj(i);
         if constraint
             plot(rad2deg(lambda_constraint),rad2deg(e_constraint),'LineWidth',2,'color','k');
             Legend3{i+2}="Constr.";
@@ -130,14 +131,14 @@ for i=1:num_of_runs
     else
         subplot(3,1,1);
         plot(t,rad2deg(lambda)); grid on; grid minor; hold on;
-        Legend1{i+1}="Run " + i + ", MSE: " + MSE_lambda(i);
+        Legend1{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_lambda(i);
         
         subplot(3,1,2);
         plot(t,rad2deg(e)); grid on; grid minor; hold on;
-        Legend2{i+1}="Run " + i + ", MSE: " + MSE_e(i);
+        Legend2{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_e(i);
         
         subplot(3,1,3);
         plot(rad2deg(lambda),rad2deg(e)); grid on; grid minor; hold on;
-        Legend3{i+1}="Run " + i + ", MSE: " + MSE_traj(i);
+        Legend3{i-(starting_index-1)+1}="Run " + i + ", MSE: " + MSE_traj(i);
     end
 end

@@ -199,8 +199,8 @@ R = diag([0.01 0.01]);
 %% Experiment 11 20.04: Task4_8.mat
 % Less oscillative pitch, but then also doesn't track as well as experiment
 % 10
-Q = diag([100 1 1 1 50 10]);
-R = diag([0.1 0.1]);
+Q = diag([150 10 1 1 75 15]);
+R = diag([0.2 0.2]);
 
 %% Optimal trajectory and input
 [K,P,e] = dlqr(Ad,bd,Q,R);
