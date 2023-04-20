@@ -104,7 +104,7 @@ p_c = timeseries(u,t);
 
 %% Save calculated data
 data = [t; u'; x1'; x2'; x3'; x4'];
-save("Data/calculated_traj_3","t","u","x1","x2","x3","x4");
+save("Data/calculated_traj_X","t","u","x1","x2","x3","x4");
 %% Plot quadprog results
 
 % figure(1)

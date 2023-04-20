@@ -27,6 +27,7 @@ for i=1:num_of_runs
     traj_p = traj.x3;
     traj_pdot = traj.x4;
     
+    figure(1);
     subplot(5,1,1);
     if i==1
         plot(run_time,run_input,"LineWidth",3,"LineStyle","--","color",Color{i});
@@ -76,35 +77,35 @@ for i=1:num_of_runs
     if i==num_of_runs
         legend("Run 1","Target 1","Run 2","Target 2","Run 3","Target 3");
     end
+    
+    figure(2);
+    subplot(511);
+    stairs(traj_t,traj_p_c);
+    hold on; grid on; grid minor;
+    ylabel('$u$',"interpreter","latex");
+    
+    subplot(512);
+    plot(traj_t,traj_lambda);
+    hold on; grid on; grid minor;
+    ylabel('$\lambda$',"interpreter","latex");
+    
+    subplot(513);
+    plot(traj_t,traj_r);
+    hold on; grid on; grid minor;
+    ylabel('$r$',"interpreter","latex");
+    
+    subplot(514);
+    plot(traj_t,traj_p);
+    hold on; grid on; grid minor;
+    ylabel('$p$',"interpreter","latex");
+    
+    subplot(515);
+    plot(traj_t,traj_pdot);
+    hold on; grid on; grid minor;
+    xlabel('time ($s$)',"interpreter","latex")
+    ylabel('$\dot{p}$',"interpreter","latex");
 end
 
-% figure(1)
-% subplot(511);
-% stairs(t,u);
-% grid on; grid minor;
-% ylabel('$u$',"interpreter","latex");
-% 
-% subplot(512);
-% plot(t,x1,'m',t,x1,'mo');
-% grid on; grid minor;
-% ylabel('$\lambda$',"interpreter","latex");
-% 
-% subplot(513);
-% plot(t,x2,'m',t,x2','mo');
-% grid on; grid minor;
-% ylabel('$r$',"interpreter","latex");
-% 
-% subplot(514);
-% plot(t,x3,'m',t,x3,'mo');
-% grid on; grid minor;
-% ylabel('$p$',"interpreter","latex");
-% 
-% subplot(515);
-% plot(t,x4,'m',t,x4','mo');
-% grid on; grid minor;
-% xlabel('time ($s$)',"interpreter","latex")
-% ylabel('$\dot{p}$',"interpreter","latex");
-% 
-% sgtitle("State and Input constrained, $q$ = " + q + ",\quad $\phi$ = " + phi,"interpreter","latex");
+
 
 
