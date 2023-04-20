@@ -1,5 +1,5 @@
-starting_index = 3;
-num_of_runs = 4;
+starting_index = 7;
+num_of_runs = 8;
 constraint = false; %True/False if want to plot constraint
 
 delta_t = 0.25;	
@@ -7,9 +7,9 @@ sim_time = 20;
 init_time = 5;
 sample_time = 0.002;
 datapoints = sim_time/sample_time;
-traj_datapoints = sim_time/delta_t;
+traj_datapoints = sim_time/delta_t + 1;
 init_points = init_time/sample_time;
-traj_init_points = init_time/delta_t; %Accounting for x0 also
+traj_init_points = init_time/delta_t + 1; %Accounting for x0 also
 
 ratio = delta_t / sample_time;
 
