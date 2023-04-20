@@ -1,5 +1,4 @@
-% TTK4135 - Helicopter lab
-% Hints/template for problem 4.
+% TTK4135 - Helicopter lab - Exercise 4
 %% Initialization and model definition
 init07;
 
