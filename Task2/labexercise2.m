@@ -4,7 +4,7 @@ init07;
 
 % Discrete time system model. x = [lambda r p p_dot]'
 h	= 0.25;                             % sampling time
-q = 1;                                  % {0.12, 1.2, 12} for simulation
+q = 12;                                  % {0.12, 1.2, 12} for simulation
                                         % q = 1 for helicopter run
 % Continuous state space matrices
 A_c = [0 1 0 0
@@ -43,8 +43,8 @@ uu 	    = p_constr;                             % Upper bound on control
 
 xl          = -Inf*ones(nx,1);                  % Lower bound on states (no bound)
 xu          = Inf*ones(nx,1);                   % Upper bound on states (no bound)
-%xl(3)       = -p_constr;                        % Add Lower bound on state x3
-%xu(3)       = p_constr;                         % Add Upper bound on state x3
+xl(3)       = -p_constr;                        % Add Lower bound on state x3
+xu(3)       = p_constr;                         % Add Upper bound on state x3
 
 % Generate constraints on measurements and inputs
 [vlb,vub]       = gen_constraints(N,M,xl,xu,ul,uu);
@@ -104,7 +104,7 @@ p_c = timeseries(u,t);
 
 %% Save calculated data
 data = [t; u'; x1'; x2'; x3'; x4'];
-save("Data/calculated_traj_X","t","u","x1","x2","x3","x4");
+save("Data/traj_based_on_q_X","t","u","x1","x2","x3","x4");
 %% Plot quadprog results
 
 % figure(1)
